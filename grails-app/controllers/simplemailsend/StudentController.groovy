@@ -41,12 +41,12 @@ class StudentController {
                                 .to(student.name, student.email)
                                 .withSubject(subject)
                                 .withHTMLText(content)
-                                .withAttachment("invitation", pdfFileByte, "application/pdf")
-                                .withAttachment("invitation", pdfFileByte, "text/plain")
+                                .withAttachment(pdfFile.getOriginalFilename(), pdfFileByte, "application/pdf")
+                                .withAttachment(generalFile.getOriginalFilename(), generaFileByte, "image/jpg")
                                 .buildEmail();
 
                         Mailer mailer = MailerBuilder
-                                .withSMTPServer("smtp.gmail.com", 25, "exceeditacademy18@gmail.com", "exceed123")
+                                .withSMTPServer("smtp.gmail.com", 25, fromEmail, password)
                                 .withTransportStrategy(TransportStrategy.SMTP_TLS)
                                 .buildMailer();
 
@@ -54,6 +54,7 @@ class StudentController {
                         //mailer.testConnection();
 
                         mailer.sendMail(email);
+                        System.out.println("StudentController: SendMailAll: Sent to student id "+student.id+" : done")
                     }
                     //successfully sent
                     redirect(uri:"/?code=3")

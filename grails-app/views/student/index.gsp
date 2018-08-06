@@ -80,7 +80,7 @@
 
                                 <div class="col-7">
                                     <input type="email" required parsley-trigger="change" class="form-control"
-                                           id="fromEmailId" placeholder="From Email" name="fromEmailId">
+                                           id="fromEmailId" placeholder="From Email" name="fromEmailId" value="exceeditacademy18@gmail.com">
                                 </div>
                             </div>
 
@@ -90,7 +90,7 @@
 
                                 <div class="col-7">
                                     <input type="password" required parsley-trigger="change" class="form-control"
-                                           id="frompassword" placeholder="Password" name="frompassword">
+                                           id="frompassword" placeholder="Password" name="frompassword" value="exceed123">
                                 </div>
                             </div>
 
@@ -100,7 +100,7 @@
 
                                 <div class="col-7">
                                     <input type="text" required parsley-trigger="change" class="form-control"
-                                           id="subject" placeholder="Subject" name="subject">
+                                           id="subject" placeholder="Subject" name="subject" value="test">
                                 </div>
                             </div>
 
@@ -110,7 +110,7 @@
 
                                 <div class="col-7">
                                     <textarea class="form-control" rows="4" cols="50" id="content" name="content"
-                                              placeholder="Content to be sent" required></textarea>
+                                              placeholder="Content to be sent" required>Hello world</textarea>
                                 </div>
                             </div>
                             <div class="form-group row">
