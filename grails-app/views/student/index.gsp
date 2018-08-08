@@ -68,9 +68,10 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card-box table-responsive">
-                        <p class="text-muted font-14 m-b-30">
+                        <p class="text-muted font-14 m-b-30 bold">
                             Gmail must be signed in the local browser for it work
                         </p>
+
                         <form class="form-horizontal" action="student/sendmailall" enctype="multipart/form-data"
                               method="post" role="form" id="sendmail">
 
@@ -80,7 +81,8 @@
 
                                 <div class="col-7">
                                     <input type="email" required parsley-trigger="change" class="form-control"
-                                           id="fromEmailId" placeholder="From Email" name="fromEmailId" value="exceeditacademy18@gmail.com">
+                                           id="fromEmailId" placeholder="From Email" name="fromEmailId"
+                                           value="exceeditacademy18@gmail.com">
                                 </div>
                             </div>
 
@@ -90,7 +92,8 @@
 
                                 <div class="col-7">
                                     <input type="password" required parsley-trigger="change" class="form-control"
-                                           id="frompassword" placeholder="Password" name="frompassword" value="exceed123">
+                                           id="frompassword" placeholder="Password" name="frompassword"
+                                           value="exceed123">
                                 </div>
                             </div>
 
@@ -113,22 +116,26 @@
                                               placeholder="Content to be sent" required>Hello world</textarea>
                                 </div>
                             </div>
+
                             <div class="form-group row">
                                 <label for="pdffile" class="col-4 col-form-label">PDF File<span
                                         class="text-danger">*</span></label>
 
                                 <div class="col-7">
-                                    <input type="file" class="filestyle" data-btnClass="btn-primary" id="pdffile" name="pdffile"
+                                    <input type="file" class="filestyle" data-btnClass="btn-primary" id="pdffile"
+                                           name="pdffile"
                                            accept="application/pdf" required>
                                 </div>
                             </div>
+
                             <div class="form-group row">
                                 <label for="generalfile" class="col-4 col-form-label">General File<span
                                         class="text-danger">*</span></label>
 
                                 <div class="col-7">
-                                    <input type="file" class="filestyle" data-btnClass="btn-primary" id="generalfile" name="generalfile"
-                                            required>
+                                    <input type="file" class="filestyle" data-btnClass="btn-primary" id="generalfile"
+                                           name="generalfile"
+                                           required>
                                 </div>
                             </div>
 
@@ -154,11 +161,11 @@
                                         data-toggle="modal" data-target="#addStudentModal" id="addStudentBtn">
                                     Add Student
                                 </button>
-                                <button type="button" class="btn btn-custom waves-effect w-md mr-2 mb-2"
+                                %{--<button type="button" class="btn btn-custom waves-effect w-md mr-2 mb-2"
                                         data-toggle="modal" data-target="#addStudentModal" id="sendMailBtn"
                                         onclick="sendMail()">
                                     Send Mail
-                                </button>
+                                </button>--}%
 
                             </div>
                         </div>
@@ -174,6 +181,7 @@
                                 <th>Email</th>
                                 <th>Place</th>
                                 <th>Qualification</th>
+                                <th>Action</th>
                             </tr>
                             </thead>
 
@@ -193,6 +201,118 @@
 <!-- ============================================================== -->
 </div>
 <!-- END wrapper -->
+
+<!-- The bootstrap 4 addStudent Modal -->
+<div class="modal fade" id="addStudentModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header custom-modal-headerBg">
+                <h4 class="modal-title" id="addStudentModalTitle">Add Student</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <form class="form-horizontal" action="student/add" enctype="multipart/form-data"
+                  method="post" role="form" id="addStudentForm">
+                <div class="modal-body">
+
+                    <div class="form-group row">
+                        <label for="name" class="col-4 col-form-label">Name<span class="text-danger">*</span></label>
+
+                        <div class="col-7">
+                            <input type="text" required parsley-trigger="change" class="form-control"
+                                   id="name" placeholder="name" name="name">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="email" class="col-4 col-form-label">Email<span
+                                class="text-danger">*</span>
+                        </label>
+
+                        <div class="col-7">
+                            <input type="email" required parsley-trigger="change" class="form-control"
+                                   id="email" placeholder="Email" name="email">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="phonenumber" class="col-4 col-form-label">Phone Number<span
+                                class="text-danger">*</span></label>
+
+                        <div class="col-7">
+                            <input type="text" data-parsley-type="number" required class="form-control"
+                                   id="phonenumber" placeholder="Phone number" name="phonenumber">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="qualification" class="col-4 col-form-label">Qualification</label>
+
+                        <div class="col-7">
+                            <input type="text" class="form-control"
+                                   id="qualification" placeholder="Qualification" name="qualification">
+                        </div>
+                    </div>
+
+
+                    <div class="form-group row">
+                        <label for="address" class="col-4 col-form-label">Address</label>
+
+                        <div class="col-7">
+                            <textarea class="form-control"
+                                      id="address" placeholder="Address" name="address"></textarea>
+                        </div>
+                    </div>
+
+                    <input type="hidden" id="addStudentModalId" name="id"/>
+                    <input type="hidden" id="addStudentModalType" name="type"/>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn w-lg btn-rounded btn-danger waves-effect waves-light"
+                            data-dismiss="modal">Close</button>
+                    <button type="reset" class="btn w-lg btn-rounded btn-warning waves-effect waves-light">Reset</button>
+                    <button class="btn w-lg btn-rounded btn-custom waves-effect waves-light"
+                            type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--End add Student Modal-->
+
+<!--- Delete Modal -->
+<div class="modal fade" id="deleteModalGeneral">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header custom-modal-headerBg">
+                <h4 class="modal-title" id="deleteModalTitle">Delete</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <p class="body-text text-dark" id="deleteModalBodyText"></p>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <form class="positivebtnform" id="deleteModalForm">
+                    <input type="hidden" class="positiveinput" id="deleteModalpositiveinput" name="id"/>
+                    <input type="hidden" class="deletetype" id="deleteModaltype" name="deletetype"/>
+                    <button type="submit" class="btn btn-info waves-light waves-effect w-md mr-2 mb-2">OK</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Delete Modal -->
 
 <!-- jQuery  -->
 <asset:javascript src="themeassets/js/jquery.min.js"/>
@@ -222,6 +342,8 @@
 <asset:javascript src="themeassets/js/jquery.app.js"/>
 <!-- bootstrap file style -->
 <asset:javascript src="themeplugins/bootstrap-filestyle/js/bootstrap-filestyle.min.js"/>
+<!-- Parsley js -->
+<asset:javascript src="themeplugins/parsleyjs/parsley.min.js"/>
 <!-- Sweet Alert Js  -->
 <asset:javascript src="themeplugins/sweet-alert/sweetalert2.min.js"/>
 <asset:javascript src="themeassets/pages/jquery.sweet-alert.init.js"/>
@@ -234,8 +356,6 @@
             sPaginationType: "simple_numbers",
             responsive: true,
             destroy: true,
-            autoWidth: false,
-            sScrollX: "100%",
             info: true,
             processing: true,
             serverSide: true,
@@ -251,29 +371,26 @@
                     if (json == "") {
                         return return_data;
                     }
+                    var editbtn = "", deletebtn = "";
                     for (var i = 0; i < json.data.length; i++) {
-                        var editbtn = "", deletebtn = "";
-
-
-                        /*var editbtn = '<button ' +
+                        editbtn = '<button ' +
                             'class="editbtn btn btn-warning waves-effect w-xs mr-2 mb-2"' +
                             'data-id="' + json.data[i].id + '"' +
                             'data-name="' + json.data[i].name + '"' +
-                            'data-subdivision="' + json.data[i].subDivision.id + '"' +
-                            'data-district="' + json.data[i].district.id + '"' +
-                            'data-toggle="modal" data-target="#addCircleModal"' +
+                            'data-phonenumber="' + json.data[i].phoneNumber + '"' +
+                            'data-email="' + json.data[i].email + '"' +
+                            'data-place="' + json.data[i].place + '"' +
+                            'data-qualification="' + json.data[i].qualification + '"' +
+                            'data-toggle="modal" data-target="#addStudentModal"' +
                             'title="Edit"><i class="fa fa-edit"></i> Edit</button>';
 
 
-
-                        var deletebtn = '<button ' +
+                        deletebtn = '<button ' +
                             'data-id="' + json.data[i].id + '"' +
                             'class="deletebtn btn btn-danger waves-effect w-xs mr-2 mb-2 "' +
                             'data-toggle="modal" data-target="#deleteModalGeneral"' +
-                            'title="delete"><i class="fa fa-trash"></i> Delete</button>';*/
+                            'title="delete"><i class="fa fa-trash"></i> Delete</button>';
 
-                        editbtn = "<button class='btn-warning waves-effect w-xs mr-2 mb-2'>Edit Student</button>";
-                        deletebtn = "<button class='btn-danger waves-effect w-xs mr-2 mb-2'>Delete Student</button>"
                         var action = editbtn + "  " + deletebtn;
                         return_data.push({
                             'id': json.data[i].id,
@@ -294,18 +411,53 @@
                 {'data': 'phoneNumber'},
                 {'data': 'email'},
                 {'data': 'place'},
-                {'data': 'qualification'}
+                {'data': 'qualification'},
+                {'data': 'action'}
             ]
         });
         displayMessageInParams();
     });
 
+    $('body').on("click", "#addStudentBtn", function () {
+
+        $("#addStudentModalId").val("");
+        $("#name").val("");
+        $("#phonenumber").val("");
+        $("#email").val("");
+        $("#address").val("");
+        $("#qualification").val("");
+        $("#addStudentModalTitle").text("Add Student: ");
+        $("#addStudentModalType").val("add");
+        $("#addStudentForm").prop("action", "student/add");
+
+    });
+
+    $('body').on("click", ".editbtn", function () {
+        var id = $(this).data('id');
+        var name = $(this).data('name');
+        var phoneNumber = $(this).data('phonenumber');
+        var email = $(this).data('email');
+        var address = $(this).data('place');
+        var qualification = $(this).data('qualification');
+
+        $("#addStudentModalId").val(id);
+        $("#name").val(name);
+        $("#phonenumber").val(phoneNumber);
+        $("#email").val(email);
+        $("#address").val(address);
+        $("#qualification").val(qualification);
+        $("#addStudentModalTitle").text("Edit Student: " + id);
+        $("#addStudentModalType").val("edit");
+        $("#addStudentForm").prop("action", "student/update");
+
+    });
+
     $('body').on("click", ".deletebtn", function () {
         var id = $(this).data('id');
         $("#deleteModalTitle").text("Are you sure?");
-        $("#deleteModalBodyText").text("Press OK to delete Circle " + id + " permanently.");
+        $("#deleteModalBodyText").text("Press OK to delete Student " + id + " permanently.");
         $("#deleteModalForm").prop("method", "post");
-        $("#deleteModalForm").prop("action", "circle/delete");
+        $("#deleteModalForm").prop("action", "student/delete");
         $("#deleteModalpositiveinput").prop("value", id);
         $("#deleteModaltype").val("delete Circle");
     });
@@ -328,6 +480,7 @@
 
     function displayMessageInParams() {
         var id = "${params.code}";
+        //failed transations
         if (id == "0") {
             swal("Email Sending failed!", "No from email or password sent please check", "error");
         }
@@ -337,8 +490,31 @@
         if (id == "2") {
             swal("Email Sending failed!", "No students in DB", "error");
         }
-        if(id=="3"){
+        if (id == "11") {
+            swal("Failed!", "Addtion or Modification of some student failed, due to field are empty or incorrect", "error");
+        }
+        if (id == "20") {
+            swal("Invalid Student ID!", "Improper Student Id Sent", "error");
+        }
+        if (id == "21") {
+            swal("No Student!", "No students with the sent id exists", "error");
+        }
+        if (id == "30") {
+            swal("Delete Student failed!", "No students with the sent id exists", "error");
+        }
+
+        //for successful transactions
+        if (id == "3") {
             swal("Email Sent Successfully!", "Email sent to all students in DB", "success");
+        }
+        if (id == "10") {
+            swal("Student Added Successfully!", "New Student added successfully to DB", "success");
+        }
+        if (id == "22") {
+            swal("Student Updated Successfully!", "Student updated successfully in DB", "success");
+        }
+        if (id == "31") {
+            swal("Student Deleted Successfully!", "Student Deleted successfully in DB", "success");
         }
     }
 

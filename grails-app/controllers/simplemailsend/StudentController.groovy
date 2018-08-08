@@ -1,5 +1,6 @@
 package simplemailsend
 
+import grails.gorm.transactions.Transactional
 import grails.web.servlet.mvc.GrailsParameterMap
 import org.grails.web.json.JSONObject
 import org.simplejavamail.email.Email
@@ -11,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile
 
 import java.text.ParseException
 
+@Transactional
 class StudentController {
 
     def index() { }
@@ -75,6 +77,8 @@ class StudentController {
         }
     }
 
+    //Expirement
+
     def sendMail(){
         String id = params.id
         if(id!=null&&id!=""){
@@ -115,6 +119,87 @@ class StudentController {
             }else{
                 render(status: 404,text: "Student not found")
             }
+        }
+    }
+
+    //Student CRUD Operation
+
+    def addStudent(){
+        String name = params.name
+        String phoneNumber = params.phonenumber
+        String email = params.email
+        String address = params.address
+        String qualification = params.qualification
+
+        if(name!=null&&name!=""&&phoneNumber!=null&&phoneNumber!=""&&email!=null&&email!=""){
+            Student addStudent = new Student()
+            addStudent.setName(name)
+            addStudent.setEmail(email)
+            addStudent.setPhoneNumber(phoneNumber)
+            addStudent.setPlace(address)
+            addStudent.setQualification(qualification)
+            addStudent.save()
+            redirect(uri:"/?code=10")
+        }else{
+            redirect(uri: "/?code=11")
+        }
+    }
+
+    def updateStudent(){
+        String id = params.id
+        String name = params.name
+        String phoneNumber = params.phonenumber
+        String email = params.email
+        String address = params.address
+        String qualification = params.qualification
+
+        if(id!=null&&id!=""&&name!=null&&name!=""&&phoneNumber!=null&&phoneNumber!=""&&email!=null&&email!=""){
+            long stdId
+            try{
+                stdId = Long.parseLong(id)
+            }catch (ParseException p){
+                System.err.println("StudentController: updateStudent: Incorrect std Id:"+p.message)
+                redirect(uri: "/?code=20")
+            }
+
+            Student updateStudent = Student.findById(stdId)
+            if(updateStudent!=null){
+                updateStudent.setName(name)
+                updateStudent.setPhoneNumber(phoneNumber)
+                updateStudent.setEmail(email)
+                updateStudent.setQualification(qualification)
+                updateStudent.setPlace(address)
+                updateStudent.save()
+                //update successful
+                redirect(uri: "/?code=22")
+            }else{
+                //no student with id found
+                redirect(uri:"/?code=21")
+            }
+        }else{
+            //fields missing
+            redirect(uri: "/?code=11")
+        }
+    }
+
+    def deleteStudent(){
+        String id = params.id
+        if(id!=null&&id!=""){
+            long stdId
+            try{
+                stdId = Long.parseLong(id)
+            }catch (ParseException p){
+                System.err.println("StudentController: updateStudent: Incorrect std Id:"+p.message)
+                redirect(uri: "/?code=20")
+            }
+
+            Student deleteStudent = Student.findById(stdId)
+            if(deleteStudent!=null){
+                deleteStudent.delete()
+                redirect(uri: "/?code=31")
+            }
+        }else{
+            redirect(uri: "/?code=30")
         }
     }
 

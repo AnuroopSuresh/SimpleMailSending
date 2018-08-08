@@ -96,7 +96,7 @@ dataSource:
     jmxExport: true
     driverClassName: com.mysql.cj.jdbc.Driver
     username: root
-    password: root
+    password: tiger
 
 environments:
     development:
