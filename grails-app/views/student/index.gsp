@@ -138,6 +138,16 @@
                                            required>
                                 </div>
                             </div>
+                            <div class="form-group row">
+                                <label for="image2" class="col-4 col-form-label">General File<span
+                                        class="text-danger">*</span></label>
+
+                                <div class="col-7">
+                                    <input type="file" class="filestyle" data-btnClass="btn-primary" id="image2"
+                                           name="image2"
+                                           required>
+                                </div>
+                            </div>
 
                             <button type="reset"
                                     class="btn w-lg btn-rounded btn-danger waves-effect waves-light">Reset</button>

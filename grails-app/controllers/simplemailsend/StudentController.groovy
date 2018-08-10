@@ -24,6 +24,7 @@ class StudentController {
         String content = params.content
         MultipartFile pdfFile = params.pdffile
         MultipartFile generalFile = params.generalfile
+        MultipartFile image2 = params.image2
 
         if(fromEmail!=null&&password!=null&&subject!=null&&content!=null){
             if(pdfFile!=null&&pdfFile.size>2&&generalFile!=null&&generalFile.size>2){
@@ -33,6 +34,8 @@ class StudentController {
                 if(studentArrayList!=null){
                     byte[] pdfFileByte = pdfFile.getBytes()
                     byte[] generaFileByte = generalFile.getBytes()
+                    byte[] image2Byte = image2.getBytes()
+
 
                     //Send mail for each student
                     for (Student student:studentArrayList) {
@@ -45,6 +48,7 @@ class StudentController {
                                 .withHTMLText(content)
                                 .withAttachment(pdfFile.getOriginalFilename(), pdfFileByte, "application/pdf")
                                 .withAttachment(generalFile.getOriginalFilename(), generaFileByte, "image/jpg")
+                                .withAttachment(image2.getOriginalFilename(), image2Byte, "image/jpg")
                                 .buildEmail();
 
                         Mailer mailer = MailerBuilder
