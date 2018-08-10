@@ -41,26 +41,30 @@ class StudentController {
                     for (Student student:studentArrayList) {
 
 
-                        Email email = EmailBuilder.startingBlank()
-                                .from(fromEmail, fromEmail)
-                                .to(student.name, student.email)
-                                .withSubject(subject)
-                                .withHTMLText(content)
-                                .withAttachment(pdfFile.getOriginalFilename(), pdfFileByte, "application/pdf")
-                                .withAttachment(generalFile.getOriginalFilename(), generaFileByte, "image/jpg")
-                                .withAttachment(image2.getOriginalFilename(), image2Byte, "image/jpg")
-                                .buildEmail();
+                        try {
+                            Email email = EmailBuilder.startingBlank()
+                                    .from(fromEmail, fromEmail)
+                                    .to(student.name, student.email)
+                                    .withSubject(subject)
+                                    .withHTMLText(content)
+                                    .withAttachment(pdfFile.getOriginalFilename(), pdfFileByte, "application/pdf")
+                                    .withAttachment(generalFile.getOriginalFilename(), generaFileByte, "image/jpg")
+                                    .withAttachment(image2.getOriginalFilename(), image2Byte, "image/jpg")
+                                    .buildEmail();
 
-                        Mailer mailer = MailerBuilder
-                                .withSMTPServer("smtp.gmail.com", 25, fromEmail, password)
-                                .withTransportStrategy(TransportStrategy.SMTP_TLS)
-                                .buildMailer();
+                            Mailer mailer = MailerBuilder
+                                    .withSMTPServer("smtp.gmail.com", 25, fromEmail, password)
+                                    .withTransportStrategy(TransportStrategy.SMTP_TLS)
+                                    .buildMailer();
 
-                        // perform connection test
-                        //mailer.testConnection();
+                            // perform connection test
+                            //mailer.testConnection();
 
-                        mailer.sendMail(email);
-                        System.out.println("StudentController: SendMailAll: Sent to student id "+student.id+" : done")
+                            mailer.sendMail(email);
+                            System.out.println("StudentController: SendMailAll: Sent to student id "+student.id+" : done")
+                        } catch (Exception e) {
+                            System.out.println("StudentController: SendMailAll: Error in sending "+e.message)
+                        }
                     }
                     //successfully sent
                     redirect(uri:"/?code=3")
