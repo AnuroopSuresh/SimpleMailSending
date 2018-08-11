@@ -15,9 +15,9 @@ import java.text.ParseException
 @Transactional
 class StudentController {
 
-    def index() { }
+    def index() {}
 
-    def sendMailAll(){
+    def sendMailAll() {
         String fromEmail = params.fromEmailId
         String password = params.frompassword
         String subject = params.subject
@@ -26,80 +26,79 @@ class StudentController {
         MultipartFile generalFile = params.generalfile
         MultipartFile image2 = params.image2
 
-        if(fromEmail!=null&&password!=null&&subject!=null&&content!=null){
-            if(pdfFile!=null&&pdfFile.size>2&&generalFile!=null&&generalFile.size>2){
+        /*if(fromEmail!=null&&password!=null&&subject!=null&&content!=null){*/
+        /*if(pdfFile!=null&&pdfFile.size>2&&generalFile!=null&&generalFile.size>2){*/
 
-                //get all student from db
-                ArrayList<Student> studentArrayList = Student.getAll()
-                if(studentArrayList!=null){
-                    byte[] pdfFileByte = pdfFile.getBytes()
-                    byte[] generaFileByte = generalFile.getBytes()
-                    byte[] image2Byte = image2.getBytes()
+        //get all student from db
+        ArrayList<Student> studentArrayList = Student.getAll()
+        if (studentArrayList != null) {
+            /*byte[] pdfFileByte = pdfFile.getBytes()
+            byte[] generaFileByte = generalFile.getBytes()
+            byte[] image2Byte = image2.getBytes()*/
 
-
-                    //Send mail for each student
-                    for (Student student:studentArrayList) {
-
-
-                        try {
-                            Email email = EmailBuilder.startingBlank()
-                                    .from(fromEmail, fromEmail)
-                                    .to(student.name, student.email)
-                                    .withSubject(subject)
-                                    .withHTMLText(content)
-                                    .withAttachment(pdfFile.getOriginalFilename(), pdfFileByte, "application/pdf")
-                                    .withAttachment(generalFile.getOriginalFilename(), generaFileByte, "image/jpg")
-                                    .withAttachment(image2.getOriginalFilename(), image2Byte, "image/jpg")
-                                    .buildEmail();
-
-                            Mailer mailer = MailerBuilder
-                                    .withSMTPServer("smtp.gmail.com", 25, fromEmail, password)
-                                    .withTransportStrategy(TransportStrategy.SMTP_TLS)
-                                    .buildMailer();
-
-                            // perform connection test
-                            //mailer.testConnection();
-
-                            mailer.sendMail(email);
-                            System.out.println("StudentController: SendMailAll: Sent to student id "+student.id+" : done")
-                        } catch (Exception e) {
-                            System.out.println("StudentController: SendMailAll: Error in sending "+e.message)
-                        }
-                    }
-                    //successfully sent
-                    redirect(uri:"/?code=3")
+            //Send mail for each student
+            for (Student student : studentArrayList) {
 
 
-                }else{
-                    //no sudent in db
-                    redirect(uri:"/?code=2")
+                try {
+                    Email email = EmailBuilder.startingBlank()
+                            .from(fromEmail, fromEmail)
+                            .to(student.name, student.email)
+                            .withSubject(subject)
+                            .withHTMLText(content)
+                    /*.withAttachment(pdfFile.getOriginalFilename(), pdfFileByte, "application/pdf")
+                    .withAttachment(generalFile.getOriginalFilename(), generaFileByte, "image/jpg")
+                    .withAttachment(image2.getOriginalFilename(), image2Byte, "image/jpg")*/
+                            .buildEmail();
+
+                    Mailer mailer = MailerBuilder
+                            .withSMTPServer("smtp.gmail.com", 25, fromEmail, password)
+                            .withTransportStrategy(TransportStrategy.SMTP_TLS)
+                            .buildMailer();
+
+                    // perform connection test
+                    //mailer.testConnection();
+
+                    mailer.sendMail(email);
+                    System.out.println("StudentController: SendMailAll: Sent to student id " + student.id + " : done")
+                } catch (Exception e) {
+                    System.out.println("StudentController: SendMailAll: Error in sending " + e.message)
                 }
-
-            }else {
-                //files not attached
-                redirect(uri:"/?code=1")
             }
+            //successfully sent
+            redirect(uri: "/?code=3")
+
+
+        } else {
+            //no sudent in db
+            redirect(uri: "/?code=2")
+        }
+
+        /*}else {
+            //files not attached
+            redirect(uri:"/?code=1")
+        }
         }else{
             //not email or passwords
             redirect(uri: "/?code=0")
-        }
+        }*/
     }
 
     //Expirement
 
-    def sendMail(){
+    def sendMail() {
         String id = params.id
-        if(id!=null&&id!=""){
+        if (id != null && id != "") {
             long stdId;
-            try{
+            try {
                 stdId = Long.parseLong(id)
-            }catch (ParseException p ){
+            } catch (ParseException p) {
                 System.err.println("StudentController: sendMail: Parse exception")
-                render(status: 400,text: "Invalid text sent")
+                render(status: 400, text: "Invalid text sent")
             }
 
             Student student = Student.findById(stdId)
-            if(student!=null){
+            if (student != null) {
                 //start
 
 
@@ -123,23 +122,23 @@ class StudentController {
 
                 System.out.println("Mail sent")
                 //end
-                render(status: 400,text: "Mail sent")
-            }else{
-                render(status: 404,text: "Student not found")
+                render(status: 400, text: "Mail sent")
+            } else {
+                render(status: 404, text: "Student not found")
             }
         }
     }
 
     //Student CRUD Operation
 
-    def addStudent(){
+    def addStudent() {
         String name = params.name
         String phoneNumber = params.phonenumber
         String email = params.email
         String address = params.address
         String qualification = params.qualification
 
-        if(name!=null&&name!=""&&phoneNumber!=null&&phoneNumber!=""&&email!=null&&email!=""){
+        if (name != null && name != "" && phoneNumber != null && phoneNumber != "" && email != null && email != "") {
             Student addStudent = new Student()
             addStudent.setName(name)
             addStudent.setEmail(email)
@@ -147,13 +146,13 @@ class StudentController {
             addStudent.setPlace(address)
             addStudent.setQualification(qualification)
             addStudent.save()
-            redirect(uri:"/?code=10")
-        }else{
+            redirect(uri: "/?code=10")
+        } else {
             redirect(uri: "/?code=11")
         }
     }
 
-    def updateStudent(){
+    def updateStudent() {
         String id = params.id
         String name = params.name
         String phoneNumber = params.phonenumber
@@ -161,17 +160,17 @@ class StudentController {
         String address = params.address
         String qualification = params.qualification
 
-        if(id!=null&&id!=""&&name!=null&&name!=""&&phoneNumber!=null&&phoneNumber!=""&&email!=null&&email!=""){
+        if (id != null && id != "" && name != null && name != "" && phoneNumber != null && phoneNumber != "" && email != null && email != "") {
             long stdId
-            try{
+            try {
                 stdId = Long.parseLong(id)
-            }catch (ParseException p){
-                System.err.println("StudentController: updateStudent: Incorrect std Id:"+p.message)
+            } catch (ParseException p) {
+                System.err.println("StudentController: updateStudent: Incorrect std Id:" + p.message)
                 redirect(uri: "/?code=20")
             }
 
             Student updateStudent = Student.findById(stdId)
-            if(updateStudent!=null){
+            if (updateStudent != null) {
                 updateStudent.setName(name)
                 updateStudent.setPhoneNumber(phoneNumber)
                 updateStudent.setEmail(email)
@@ -180,33 +179,33 @@ class StudentController {
                 updateStudent.save()
                 //update successful
                 redirect(uri: "/?code=22")
-            }else{
+            } else {
                 //no student with id found
-                redirect(uri:"/?code=21")
+                redirect(uri: "/?code=21")
             }
-        }else{
+        } else {
             //fields missing
             redirect(uri: "/?code=11")
         }
     }
 
-    def deleteStudent(){
+    def deleteStudent() {
         String id = params.id
-        if(id!=null&&id!=""){
+        if (id != null && id != "") {
             long stdId
-            try{
+            try {
                 stdId = Long.parseLong(id)
-            }catch (ParseException p){
-                System.err.println("StudentController: updateStudent: Incorrect std Id:"+p.message)
+            } catch (ParseException p) {
+                System.err.println("StudentController: updateStudent: Incorrect std Id:" + p.message)
                 redirect(uri: "/?code=20")
             }
 
             Student deleteStudent = Student.findById(stdId)
-            if(deleteStudent!=null){
+            if (deleteStudent != null) {
                 deleteStudent.delete()
                 redirect(uri: "/?code=31")
             }
-        }else{
+        } else {
             redirect(uri: "/?code=30")
         }
     }
