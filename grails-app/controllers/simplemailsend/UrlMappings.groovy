@@ -19,5 +19,6 @@ class UrlMappings {
         "/student/getstudents"(controller: "student",action: "getStudentTable")
         "/student/sendmail"(controller: "student",action: "sendMail")
         "/student/sendmailall"(controller: "student",action: "sendMailAll")
+        "/student/composemailsim"
     }
 }
