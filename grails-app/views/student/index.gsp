@@ -82,7 +82,7 @@
                                 <div class="col-7">
                                     <input type="email" required parsley-trigger="change" class="form-control"
                                            id="fromEmailId" placeholder="From Email" name="fromEmailId"
-                                           value="exceeditacademy18@gmail.com">
+                                           value="info@pasfextech.com">
                                 </div>
                             </div>
 
@@ -93,7 +93,7 @@
                                 <div class="col-7">
                                     <input type="password" required parsley-trigger="change" class="form-control"
                                            id="frompassword" placeholder="Password" name="frompassword"
-                                           value="exceed123">
+                                           value="">
                                 </div>
                             </div>
 
@@ -254,7 +254,8 @@
 
                         <div class="col-7">
                             <input type="text" data-parsley-type="number" required class="form-control"
-                                   id="phonenumber" placeholder="Phone number" name="phonenumber">
+                                   id="phonenumber" placeholder="Phdumma
+                                   one number" name="phonenumber">
                         </div>
                     </div>
 
@@ -499,6 +500,9 @@
         }
         if (id == "2") {
             swal("Email Sending failed!", "No students in DB", "error");
+        }
+        if (id == "5") {
+            swal("Email Sending failed!", "Exception thrown please check error log in IDE", "error");
         }
         if (id == "11") {
             swal("Failed!", "Addtion or Modification of some student failed, due to field are empty or incorrect", "error");

@@ -35,25 +35,29 @@ class StudentController {
             /*byte[] pdfFileByte = pdfFile.getBytes()
             byte[] generaFileByte = generalFile.getBytes()
             byte[] image2Byte = image2.getBytes()*/
-
+            int errorCode =3;
             //Send mail for each student
             for (Student student : studentArrayList) {
 
-
                 try {
+
                     Email email = EmailBuilder.startingBlank()
                             .from(fromEmail, fromEmail)
                             .to(student.name, student.email)
                             .withSubject(subject)
-                            .withHTMLText(content)
+                            .withHTMLText(content.replace("@name@",student.name+",<br/>"))
                     /*.withAttachment(pdfFile.getOriginalFilename(), pdfFileByte, "application/pdf")
                     .withAttachment(generalFile.getOriginalFilename(), generaFileByte, "image/jpg")
                     .withAttachment(image2.getOriginalFilename(), image2Byte, "image/jpg")*/
                             .buildEmail();
 
-                    Mailer mailer = MailerBuilder
+                    /*Mailer mailer = MailerBuilder
                             .withSMTPServer("smtp.gmail.com", 25, fromEmail, password)
                             .withTransportStrategy(TransportStrategy.SMTP_TLS)
+                            .buildMailer();*/
+                    Mailer mailer = MailerBuilder
+                            .withSMTPServer("smtpout.asia.secureserver.net", 25, fromEmail, password)
+                            .withTransportStrategy(TransportStrategy.SMTP)
                             .buildMailer();
 
                     // perform connection test
@@ -62,70 +66,17 @@ class StudentController {
                     mailer.sendMail(email);
                     System.out.println("StudentController: SendMailAll: Sent to student id " + student.id + " : done")
                 } catch (Exception e) {
-                    System.out.println("StudentController: SendMailAll: Error in sending " + e.message)
+                    errorCode=5
+                    System.out.println("StudentController: SendMailAll: Error in sending:  " + e.printStackTrace())
                 }
             }
             //successfully sent
-            redirect(uri: "/?code=3")
+            redirect(uri: "/?code="+errorCode)
 
 
         } else {
             //no sudent in db
             redirect(uri: "/?code=2")
-        }
-
-        /*}else {
-            //files not attached
-            redirect(uri:"/?code=1")
-        }
-        }else{
-            //not email or passwords
-            redirect(uri: "/?code=0")
-        }*/
-    }
-
-    //Expirement
-
-    def sendMail() {
-        String id = params.id
-        if (id != null && id != "") {
-            long stdId;
-            try {
-                stdId = Long.parseLong(id)
-            } catch (ParseException p) {
-                System.err.println("StudentController: sendMail: Parse exception")
-                render(status: 400, text: "Invalid text sent")
-            }
-
-            Student student = Student.findById(stdId)
-            if (student != null) {
-                //start
-
-
-                Email email = EmailBuilder.startingBlank()
-                        .from("Exceed Test", "exceeditacademy18@gmail.com")
-                        .to("andrew", "andrewcyclotron@gmail.com")
-                        .withSubject("hey")
-                        .withHTMLText("<img src='cid:wink1'><b>We should meet up!</b><img src='cid:wink2'><p><button>Hello</button></p>")
-                        .withPlainText("Please view this email in a modern email client!")
-                        .buildEmail();
-
-                Mailer mailer = MailerBuilder
-                        .withSMTPServer("smtp.gmail.com", 25, "exceeditacademy18@gmail.com", "exceed123")
-                        .withTransportStrategy(TransportStrategy.SMTP_TLS)
-                        .buildMailer();
-
-                // perform connection test
-                //mailer.testConnection();
-
-                mailer.sendMail(email);
-
-                System.out.println("Mail sent")
-                //end
-                render(status: 400, text: "Mail sent")
-            } else {
-                render(status: 404, text: "Student not found")
-            }
         }
     }
 
