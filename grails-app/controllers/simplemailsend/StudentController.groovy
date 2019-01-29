@@ -22,8 +22,9 @@ class StudentController {
         String password = params.frompassword
         String subject = params.subject
         String content = params.content
-        MultipartFile pdfFile = params.pdffile
-        MultipartFile generalFile = params.generalfile
+        /* MultipartFile pdfFile = params.pdffile
+         MultipartFile pdfFile1 = params.pdffile1
+         MultipartFile generalFile = params.generalfile*/
         MultipartFile image2 = params.image2
 
         /*if(fromEmail!=null&&password!=null&&subject!=null&&content!=null){*/
@@ -32,10 +33,11 @@ class StudentController {
         //get all student from db
         ArrayList<Student> studentArrayList = Student.getAll()
         if (studentArrayList != null) {
-            /*byte[] pdfFileByte = pdfFile.getBytes()
-            byte[] generaFileByte = generalFile.getBytes()
-            byte[] image2Byte = image2.getBytes()*/
-            int errorCode =3;
+            /* byte[] pdfFileByte = pdfFile.getBytes()
+              byte[] pdfFile1Byte = pdfFile1.getBytes()
+              byte[] generaFileByte = generalFile.getBytes()*/
+            byte[] image2Byte = image2.getBytes()
+            int errorCode = 3;
             //Send mail for each student
             for (Student student : studentArrayList) {
 
@@ -45,20 +47,23 @@ class StudentController {
                             .from(fromEmail, fromEmail)
                             .to(student.name, student.email)
                             .withSubject(subject)
-                            .withHTMLText(content.replace("@name@",student.name+",<br/>"))
-                    /*.withAttachment(pdfFile.getOriginalFilename(), pdfFileByte, "application/pdf")
-                    .withAttachment(generalFile.getOriginalFilename(), generaFileByte, "image/jpg")
-                    .withAttachment(image2.getOriginalFilename(), image2Byte, "image/jpg")*/
+                            .withHTMLText(content.replace("@name@", student.name + ",<br/>"))
+                    /* .withAttachment(pdfFile.getOriginalFilename(), pdfFileByte, "application/pdf")
+                       .withAttachment(pdfFile1.getOriginalFilename(), pdfFile1Byte, "application/pdf1")
+                      .withAttachment(generalFile.getOriginalFilename(), generaFileByte, "image/jpg")*/
+                            .withAttachment(image2.getOriginalFilename(), image2Byte, "image/jpg")
                             .buildEmail();
 
-                    /*Mailer mailer = MailerBuilder
+                    Mailer mailer = MailerBuilder
                             .withSMTPServer("smtp.gmail.com", 25, fromEmail, password)
                             .withTransportStrategy(TransportStrategy.SMTP_TLS)
-                            .buildMailer();*/
-                    Mailer mailer = MailerBuilder
+                            .buildMailer();
+                    println("Password: "+ password)
+                    println("email: "+ fromEmail)
+                    /* Mailer mailer = MailerBuilder
                             .withSMTPServer("smtpout.asia.secureserver.net", 25, fromEmail, password)
                             .withTransportStrategy(TransportStrategy.SMTP)
-                            .buildMailer();
+                            .buildMailer();*/
 
                     // perform connection test
                     //mailer.testConnection();
@@ -66,12 +71,12 @@ class StudentController {
                     mailer.sendMail(email);
                     System.out.println("StudentController: SendMailAll: Sent to student id " + student.id + " : done")
                 } catch (Exception e) {
-                    errorCode=5
+                    errorCode = 5
                     System.out.println("StudentController: SendMailAll: Error in sending:  " + e.printStackTrace())
                 }
             }
             //successfully sent
-            redirect(uri: "/?code="+errorCode)
+            redirect(uri: "/?code=" + errorCode)
 
 
         } else {
