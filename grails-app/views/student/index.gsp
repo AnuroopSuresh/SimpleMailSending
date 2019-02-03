@@ -76,28 +76,6 @@
                               method="post" role="form" id="sendmail">
 
                             <div class="form-group row">
-                                <label for="fromEmailId" class="col-4 col-form-label">From email<span
-                                        class="text-danger">*</span></label>
-
-                                <div class="col-7">
-                                    <input type="email" required parsley-trigger="change" class="form-control"
-                                           id="fromEmailId" placeholder="From Email" name="fromEmailId"
-                                           value="exceed.coaching.academy@gmail.com">
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <label for="frompassword" class="col-4 col-form-label">Password<span
-                                        class="text-danger">*</span></label>
-
-                                <div class="col-7">
-                                    <input type="password" required parsley-trigger="change" class="form-control"
-                                           id="frompassword" placeholder="Password" name="frompassword"
-                                           value="exceed123$">
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
                                 <label for="subject" class="col-4 col-form-label">Subject<span
                                         class="text-danger">*</span></label>
 

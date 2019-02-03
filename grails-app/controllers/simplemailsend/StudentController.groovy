@@ -9,7 +9,10 @@ import org.simplejavamail.mailer.Mailer
 import org.simplejavamail.mailer.MailerBuilder
 import org.simplejavamail.mailer.config.TransportStrategy
 import org.springframework.web.multipart.MultipartFile
+import sun.security.pkcs11.Session
 
+import javax.mail.internet.InternetAddress
+import javax.xml.ws.wsaddressing.W3CEndpointReference
 import java.text.ParseException
 
 @Transactional
@@ -18,11 +21,9 @@ class StudentController {
     def index() {}
 
     def sendMailAll() {
-        String fromEmail = params.fromEmailId
-        String password = params.frompassword
-        String subject = params.subject
+        String emailSubject = params.subject
         String content = params.content
-        /* MultipartFile pdfFile = params.pdffile
+        /*MultipartFile pdfFile = params.pdffile
          MultipartFile pdfFile1 = params.pdffile1
          MultipartFile generalFile = params.generalfile*/
         MultipartFile image2 = params.image2
@@ -42,34 +43,19 @@ class StudentController {
             for (Student student : studentArrayList) {
 
                 try {
+                    sendMail {
+                        multipart true
+                        to student.email
+                        subject emailSubject
+                        html content
+                        if(image2 && !image2.empty) {
+                            File tmpFile = new File(System.getProperty("java.io.tmpdir") + System.getProperty("file.separator") + image2.getOriginalFilename());
+                            image2.transferTo(tmpFile)
+                            attach tmpFile
+                        }
+                    }
 
-                    Email email = EmailBuilder.startingBlank()
-                            .from(fromEmail, fromEmail)
-                            .to(student.name, student.email)
-                            .withSubject(subject)
-                            .withHTMLText(content.replace("@name@", student.name + ",<br/>"))
-                    /* .withAttachment(pdfFile.getOriginalFilename(), pdfFileByte, "application/pdf")
-                       .withAttachment(pdfFile1.getOriginalFilename(), pdfFile1Byte, "application/pdf1")
-                      .withAttachment(generalFile.getOriginalFilename(), generaFileByte, "image/jpg")*/
-                            .withAttachment(image2.getOriginalFilename(), image2Byte, "image/jpg")
-                            .buildEmail();
-
-                    Mailer mailer = MailerBuilder
-                            .withSMTPServer("smtp.gmail.com", 25, fromEmail, password)
-                            .withTransportStrategy(TransportStrategy.SMTP_TLS)
-                            .buildMailer();
-                    println("Password: "+ password)
-                    println("email: "+ fromEmail)
-                    /* Mailer mailer = MailerBuilder
-                            .withSMTPServer("smtpout.asia.secureserver.net", 25, fromEmail, password)
-                            .withTransportStrategy(TransportStrategy.SMTP)
-                            .buildMailer();*/
-
-                    // perform connection test
-                    //mailer.testConnection();
-
-                    mailer.sendMail(email);
-                    System.out.println("StudentController: SendMailAll: Sent to student id " + student.id + " : done")
+                    println("StudentController: SendMailAll: Sent to email: "+student.email)
                 } catch (Exception e) {
                     errorCode = 5
                     System.out.println("StudentController: SendMailAll: Error in sending:  " + e.printStackTrace())
